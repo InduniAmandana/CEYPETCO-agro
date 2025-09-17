@@ -20,10 +20,9 @@ import {
   Linkedin,
   Youtube,
 } from "lucide-react";
-import { motion, useScroll, useTransform, type Variants } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform, type Variants } from "framer-motion";
 
 /* ========= Motion presets (accessible + smooth) ========= */
-
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 const headContainer: Variants = {
@@ -62,7 +61,6 @@ const cardIn: Variants = {
 };
 
 /* ========= Tiny UI helpers ========= */
-
 type ButtonProps = React.ComponentProps<"button"> & {
   variant?: "primary" | "outline" | "ghost";
 };
@@ -94,10 +92,9 @@ const Section = ({
 );
 
 /* ========= Topbar + Navbar ========= */
-
 function TopBar() {
   return (
-    <div className="w-full bg-emerald-700 text-white text-sm">
+    <div className="bg-gradient-to-br from-emerald-600 via-green-500 to-lime-400 text-white text-sm">
       <div className="mx-auto max-w-7xl px-4 py-2 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-5">
           <span className="inline-flex items-center gap-2">
@@ -145,31 +142,18 @@ function Navbar() {
             width={44}
             height={44}
             className="rounded-full ring-1 ring-emerald-100"
+            priority
           />
           <div className="font-bold text-lg">Ceypetco Agro</div>
         </div>
         <nav className="hidden md:flex items-center gap-6 text-sm text-neutral-700">
-          <a href="#home" className="hover:text-emerald-700">
-            Home
-          </a>
-          <a href="#about" className="hover:text-emerald-700">
-            About
-          </a>
-          <a href="#services" className="hover:text-emerald-700">
-            Services
-          </a>
-          <a href="#categories" className="hover:text-emerald-700">
-            Products
-          </a>
-          <a href="#projects" className="hover:text-emerald-700">
-            Projects
-          </a>
-          <a href="#blog" className="hover:text-emerald-700">
-            Blog
-          </a>
-          <a href="#contact" className="hover:text-emerald-700">
-            Contact
-          </a>
+          <a href="#home" className="hover:text-emerald-700">Home</a>
+          <a href="#about" className="hover:text-emerald-700">About</a>
+          <a href="#services" className="hover:text-emerald-700">Services</a>
+          <a href="#categories" className="hover:text-emerald-700">Products</a>
+          <a href="#projects" className="hover:text-emerald-700">Projects</a>
+          <a href="#blog" className="hover:text-emerald-700">Blog</a>
+          <a href="#contact" className="hover:text-emerald-700">Contact</a>
         </nav>
         <Button className="hidden md:inline-flex">Get Quote</Button>
       </div>
@@ -178,47 +162,27 @@ function Navbar() {
 }
 
 /* ========= Hero (animated) ========= */
-
-export function Hero() {
+function Hero() {
   const { scrollY } = useScroll();
   const yImg = useTransform(scrollY, [0, 300], [0, 60]);
   const yOverlay = useTransform(scrollY, [0, 300], [0, 30]);
   const yCopy = useTransform(scrollY, [0, 300], [0, -10]);
 
   const features = [
-    {
-      icon: <Leaf className="h-5 w-5" />,
-      title: "Organic Inputs",
-      text: "Certified bio fertilizers & bio pesticides",
-    },
+    { icon: <Leaf className="h-5 w-5" />, title: "Organic Inputs", text: "Certified bio fertilizers & bio pesticides" },
     { icon: <Wheat className="h-5 w-5" />, title: "Crop Advisory", text: "Field-tested plans for local conditions" },
     { icon: <Tractor className="h-5 w-5" />, title: "Smart Mechanization", text: "Rental & IoT monitoring options" },
   ];
 
-  const headlineText =
-    "Government-backed agro solutions for Sri Lankan farmers".split(" ");
+  const headlineWords = "Government-Backed Agro Solutions for Sri Lankan Farmers".split(" ");
 
   return (
     <section id="home" className="relative">
       <div className="relative h-[68vh] min-h-[520px] w-full overflow-hidden">
-        {/* background image (parallax) */}
         <motion.div style={{ y: yImg }} className="absolute inset-0">
-          <Image
-            src="/hero-farm.png"
-            alt="Green field"
-            fill
-            className="object-cover will-change-transform"
-            priority
-          />
+          <Image src="/hero-farm.png" alt="Green field" fill className="object-cover will-change-transform" priority />
         </motion.div>
-
-        {/* overlay */}
-        <motion.div
-          style={{ y: yOverlay }}
-          className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-black/20"
-        />
-
-        {/* content */}
+        <motion.div style={{ y: yOverlay }} className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-black/20" />
         <motion.div className="absolute inset-0" style={{ y: yCopy }}>
           <div className="mx-auto flex h-full max-w-7xl items-center px-4">
             <motion.div
@@ -228,15 +192,12 @@ export function Hero() {
               whileInView="show"
               viewport={{ once: true, margin: "-80px" }}
             >
-              <motion.p
-                variants={badgeFade}
-                className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs ring-1 ring-white/30"
-              >
+              <motion.p variants={badgeFade} className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs ring-1 ring-white/30">
                 <ShieldCheck className="h-4 w-4" /> ISO 9001 & 14001 certified
               </motion.p>
 
               <motion.h1 className="mt-4 text-4xl md:text-6xl font-extrabold leading-tight" variants={headStagger}>
-                {headlineText.map((w, i) => (
+                {headlineWords.map((w, i) => (
                   <motion.span key={i} className="inline-block mr-2" variants={wordPop}>
                     {w}
                   </motion.span>
@@ -254,22 +215,11 @@ export function Hero() {
                 quality inputs, advisory, and fair pricing—aligned to national green-agriculture goals.
               </motion.p>
 
-              <motion.div
-                className="mt-6 flex flex-wrap items-center gap-3"
-                variants={ctaRow}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true }}
-              >
-                <Button
-                  onClick={() => document.getElementById("services")?.scrollIntoView({ behavior: "smooth" })}
-                >
+              <motion.div className="mt-6 flex flex-wrap items-center gap-3" variants={ctaRow} initial="hidden" whileInView="show" viewport={{ once: true }}>
+                <Button onClick={() => document.getElementById("services")?.scrollIntoView({ behavior: "smooth" })}>
                   Explore Services <ArrowRight className="h-4 w-4" />
                 </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
-                >
+                <Button variant="outline" onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}>
                   Learn More
                 </Button>
               </motion.div>
@@ -277,7 +227,6 @@ export function Hero() {
           </div>
         </motion.div>
 
-        {/* floating features */}
         <div className="absolute -bottom-10 left-1/2 z-10 w-full -translate-x-1/2 px-4">
           <div className="mx-auto grid max-w-7xl grid-cols-1 gap-4 sm:grid-cols-3">
             {features.map((f, i) => (
@@ -306,14 +255,7 @@ export function Hero() {
 
       <div className="h-14" />
 
-      {/* certifications strip */}
-      <motion.div
-        className="bg-white"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
-        viewport={{ once: true }}
-      >
+      <motion.div className="bg-white" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 0.6 }} viewport={{ once: true }}>
         <div className="mx-auto max-w-7xl px-4 py-8 grid gap-6 sm:grid-cols-3">
           {[
             { label: "ISO 9001:2015", desc: "Quality Management System" },
@@ -341,9 +283,21 @@ export function Hero() {
   );
 }
 
-/* ========= About (animated) ========= */
-
+/* ========= About (auto image transition + animation) ========= */
 function About() {
+  const images = ["/proj.png", "/proj1.png", "/proj2.png"];
+  const [index, setIndex] = React.useState(0);
+  const [paused, setPaused] = React.useState(false);
+
+  // autoplay with pause-on-hover + keyboard control
+  React.useEffect(() => {
+    if (paused) return;
+    const id = setInterval(() => setIndex((i) => (i + 1) % images.length), 3500);
+    return () => clearInterval(id);
+  }, [paused, images.length]);
+
+  const go = (n: number) => setIndex((i) => (i + n + images.length) % images.length);
+
   return (
     <Section id="about">
       <div className="grid gap-10 md:grid-cols-2 items-center">
@@ -353,14 +307,32 @@ function About() {
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, ease: EASE }}
           viewport={{ once: true }}
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+          onKeyDown={(e) => {
+            if (e.key === "ArrowLeft") go(-1);
+            if (e.key === "ArrowRight") go(1);
+          }}
+          tabIndex={0}
+          aria-roledescription="carousel"
+          aria-label="About images"
         >
-          <Image
-            src="/about-field.png"
-            alt="About"
-            width={720}
-            height={520}
-            className="rounded-3xl object-cover ring-1 ring-emerald-100"
-          />
+          <div className="relative h-[340px] md:h-[520px] w-full overflow-hidden rounded-3xl ring-1 ring-emerald-100">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={images[index]}
+                className="absolute inset-0"
+                initial={{ opacity: 0, scale: 1.02 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.995 }}
+                transition={{ duration: 0.6, ease: EASE }}
+              >
+                <Image src={images[index]} alt="About" fill className="object-cover" priority />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* floating badge */}
           <motion.div
             className="absolute -bottom-4 -right-4 rounded-2xl bg-white p-4 ring-1 ring-emerald-100 shadow-md"
             initial={{ opacity: 0, y: 10 }}
@@ -373,8 +345,24 @@ function About() {
               <span className="font-semibold">10k+ Farmers served</span>
             </div>
           </motion.div>
+
+          {/* dots */}
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2">
+            {images.map((_, i) => (
+              <button
+                key={i}
+                aria-label={`Go to slide ${i + 1}`}
+                onClick={() => setIndex(i)}
+                className={[
+                  "h-2.5 w-2.5 rounded-full ring-1 ring-emerald-200 transition",
+                  i === index ? "bg-emerald-600" : "bg-white hover:bg-emerald-100",
+                ].join(" ")}
+              />
+            ))}
+          </div>
         </motion.div>
 
+        {/* Copy column */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -428,7 +416,6 @@ function About() {
 }
 
 /* ========= Services ========= */
-
 function Services() {
   const items = [
     { title: "Soil Testing", text: "Lab reports & fertilizer plans", icon: <Sprout className="h-5 w-5" /> },
@@ -447,15 +434,7 @@ function Services() {
       </div>
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((s, i) => (
-          <motion.div
-            key={s.title}
-            className="rounded-2xl bg-white p-6 ring-1 ring-emerald-100 hover:shadow-md"
-            custom={i}
-            variants={cardIn}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-          >
+          <motion.div key={s.title} className="rounded-2xl bg-white p-6 ring-1 ring-emerald-100 hover:shadow-md" custom={i} variants={cardIn} initial="hidden" whileInView="show" viewport={{ once: true }}>
             <div className="flex items-center gap-3">
               <span className="grid h-10 w-10 place-items-center rounded-xl bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200">
                 {s.icon}
@@ -471,7 +450,6 @@ function Services() {
 }
 
 /* ========= Product Categories ========= */
-
 function ProductCategories() {
   const cats = ["Insecticides", "Weedicides", "Fungicides", "Bio-Insecticides"];
   return (
@@ -479,21 +457,11 @@ function ProductCategories() {
       <div className="text-center max-w-2xl mx-auto">
         <p className="text-emerald-700 font-semibold">Product Categories</p>
         <h2 className="mt-2 text-3xl md:text-4xl font-bold">Trusted portfolio for Sri Lankan crops</h2>
-        <p className="mt-3 text-neutral-600">
-          We supply core agrochemical categories with farmer-centric pricing and availability.
-        </p>
+        <p className="mt-3 text-neutral-600">We supply core agrochemical categories with farmer-centric pricing and availability.</p>
       </div>
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {cats.map((c, i) => (
-          <motion.div
-            key={c}
-            className="rounded-2xl bg-white p-6 ring-1 ring-emerald-100 hover:shadow-md"
-            custom={i}
-            variants={cardIn}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-          >
+          <motion.div key={c} className="rounded-2xl bg-white p-6 ring-1 ring-emerald-100 hover:shadow-md" custom={i} variants={cardIn} initial="hidden" whileInView="show" viewport={{ once: true }}>
             <div className="flex items-center gap-3">
               <span className="grid h-10 w-10 place-items-center rounded-xl bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200">
                 <Leaf className="h-5 w-5" />
@@ -509,7 +477,6 @@ function ProductCategories() {
 }
 
 /* ========= Products Table ========= */
-
 function ProductsTable() {
   const data = [
     { cat: "Insecticides", name: "Profenophos 50% EC" },
@@ -532,18 +499,10 @@ function ProductsTable() {
       <div className="text-center max-w-2xl mx-auto">
         <p className="text-emerald-700 font-semibold">Products</p>
         <h2 className="mt-2 text-3xl md:text-4xl font-bold">Available portfolio</h2>
-        <p className="mt-3 text-neutral-600">
-          Availability subject to regulations and seasonal demand. Contact us for current stock and guidance.
-        </p>
+        <p className="mt-3 text-neutral-600">Availability subject to regulations and seasonal demand. Contact us for current stock and guidance.</p>
       </div>
 
-      <motion.div
-        className="mt-8 overflow-x-auto rounded-2xl ring-1 ring-emerald-100 bg-white"
-        initial={{ opacity: 0, y: 8 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        viewport={{ once: true }}
-      >
+      <motion.div className="mt-8 overflow-x-auto rounded-2xl ring-1 ring-emerald-100 bg-white" initial={{ opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} viewport={{ once: true }}>
         <table className="min-w-full text-sm">
           <thead className="bg-emerald-50">
             <tr>
@@ -581,44 +540,28 @@ function ProductsTable() {
 }
 
 /* ========= Flipper Highlight ========= */
-
 function FlipperHighlight() {
   return (
     <Section id="flipper">
-      <motion.div
-        className="rounded-3xl bg-white ring-1 ring-emerald-100 p-8 md:p-10 grid gap-8 md:grid-cols-2"
-        initial={{ opacity: 0, y: 10 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.45 }}
-        viewport={{ once: true }}
-      >
+      <motion.div className="rounded-3xl bg-white ring-1 ring-emerald-100 p-8 md:p-10 grid gap-8 md:grid-cols-2" initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }} viewport={{ once: true }}>
         <div>
           <p className="text-emerald-700 font-semibold">Bio-Pesticide</p>
-          <h2 className="mt-2 text-3xl md:text-4xl font-bold">Flipper — world-class bio-insecticide</h2>
+          <h2 className="mt-2 text-3xl md:text-4xl font-bold">Flipper — World-Class Bio-Insecticide</h2>
           <p className="mt-3 text-neutral-600">
             In line with Sri Lanka’s green-agriculture direction, Ceypetco Agro introduced the bio-pesticide{" "}
             <strong>Flipper</strong>, supporting sustainable pest management with reduced residues.
           </p>
           <div className="mt-6 flex gap-3">
-            <a href="/Flipper.pdf" target="_blank" rel="noopener" className="inline-flex">
+            <a href="/api/flipper" className="inline-flex">
               <Button>Download Leaflet</Button>
             </a>
-            <Button
-              variant="outline"
-              onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
-            >
+            <Button variant="outline" onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}>
               Ask an Agronomist
             </Button>
           </div>
         </div>
         <div className="relative">
-          <Image
-            src="/blog-ipm.jpg"
-            alt="Flipper Bio-Pesticide"
-            width={720}
-            height={520}
-            className="rounded-3xl object-cover ring-1 ring-emerald-100"
-          />
+          <Image src="/produ.png" alt="Flipper Bio-Pesticide" width={720} height={520} className="rounded-3xl object-cover ring-1 ring-emerald-100" />
         </div>
       </motion.div>
     </Section>
@@ -626,12 +569,11 @@ function FlipperHighlight() {
 }
 
 /* ========= Projects ========= */
-
 function Projects() {
   const items = [
-    { title: "Tea Smallholder Program", img: "/proj-tea.jpg" },
-    { title: "Paddy Yield Boost", img: "/proj-paddy.jpg" },
-    { title: "Vegetable Cluster", img: "/proj-veg.jpg" },
+    { title: "Tea Smallholder Program", img: "/proj.png" },
+    { title: "Paddy Yield Boost", img: "/proj1.png" },
+    { title: "Vegetable Cluster", img: "/proj2.png" },
     { title: "Coconut Rehab", img: "/proj-coconut.jpg" },
     { title: "Maize Contract Farming", img: "/proj-maize.jpg" },
     { title: "Spices Value Chain", img: "/proj-spice.jpg" },
@@ -657,9 +599,7 @@ function Projects() {
             </div>
             <div className="p-4 flex items-center justify-between">
               <div className="font-semibold">{p.title}</div>
-              <Button variant="outline" className="rounded-full px-4 py-1.5 text-xs">
-                View
-              </Button>
+              <Button variant="outline" className="rounded-full px-4 py-1.5 text-xs">View</Button>
             </div>
           </motion.div>
         ))}
@@ -669,7 +609,6 @@ function Projects() {
 }
 
 /* ========= Blog ========= */
-
 function Blog() {
   const posts = [
     { title: "Soil organic matter 101", img: "/blog-soil.jpg", date: "Aug 12, 2025" },
@@ -684,26 +623,15 @@ function Blog() {
       </div>
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {posts.map((b, i) => (
-          <motion.article
-            key={b.title}
-            className="rounded-2xl overflow-hidden bg-white ring-1 ring-emerald-100"
-            initial={{ opacity: 0, y: 8 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.06 * i }}
-            viewport={{ once: true }}
-          >
+          <motion.article key={b.title} className="rounded-2xl overflow-hidden bg-white ring-1 ring-emerald-100" initial={{ opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 * i }} viewport={{ once: true }}>
             <div className="relative h-48">
               <Image src={b.img} alt={b.title} fill className="object-cover" />
             </div>
             <div className="p-5">
               <div className="text-xs text-neutral-500">{b.date}</div>
               <h3 className="mt-1 font-semibold">{b.title}</h3>
-              <p className="mt-2 text-sm text-neutral-600">
-                Practical guidance you can apply this season to raise yields responsibly.
-              </p>
-              <Button variant="outline" className="mt-4">
-                Read More
-              </Button>
+              <p className="mt-2 text-sm text-neutral-600">Practical guidance you can apply this season to raise yields responsibly.</p>
+              <Button variant="outline" className="mt-4">Read More</Button>
             </div>
           </motion.article>
         ))}
@@ -713,55 +641,27 @@ function Blog() {
 }
 
 /* ========= Contact ========= */
-
 function Contact() {
   return (
     <Section id="contact">
-      <motion.div
-        className="rounded-3xl bg-white ring-1 ring-emerald-100 p-8 md:p-10 grid gap-8 md:grid-cols-2"
-        initial={{ opacity: 0, y: 10 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.45 }}
-        viewport={{ once: true }}
-      >
+      <motion.div className="rounded-3xl bg-white ring-1 ring-emerald-100 p-8 md:p-10 grid gap-8 md:grid-cols-2" initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }} viewport={{ once: true }}>
         <div>
           <p className="text-emerald-700 font-semibold">Contact Us</p>
           <h2 className="mt-2 text-3xl md:text-4xl font-bold">Let’s grow together</h2>
-          <p className="mt-3 text-neutral-600">
-            Ask for farm visits, input quotes, or technical training. Our team will respond within one business day.
-          </p>
+          <p className="mt-3 text-neutral-600">Ask for farm visits, input quotes, or technical training. Our team will respond within one business day.</p>
           <ul className="mt-6 space-y-3 text-sm text-neutral-700">
-            <li className="flex items-start gap-2">
-              <MapPin className="h-4 w-4 mt-0.5" /> 609, Dr. Danister de Silva Mawatha, Colombo 09
-            </li>
-            <li className="flex items-start gap-2">
-              <Phone className="h-4 w-4 mt-0.5" /> +94 11 729 6100
-            </li>
-            <li className="flex items-start gap-2">
-              <Mail className="h-4 w-4 mt-0.5" /> info@example.com
-            </li>
+            <li className="flex items-start gap-2"><MapPin className="h-4 w-4 mt-0.5" /> 609, Dr. Danister de Silva Mawatha, Colombo 09</li>
+            <li className="flex items-start gap-2"><Phone className="h-4 w-4 mt-0.5" /> +94 11 729 6100</li>
+            <li className="flex items-start gap-2"><Mail className="h-4 w-4 mt-0.5" /> info@example.com</li>
           </ul>
         </div>
         <form className="grid gap-4">
-          <input
-            className="rounded-xl px-4 py-3 ring-1 ring-emerald-100 outline-none focus:ring-emerald-300"
-            placeholder="Full name"
-          />
+          <input className="rounded-xl px-4 py-3 ring-1 ring-emerald-100 outline-none focus:ring-emerald-300" placeholder="Full name" />
           <div className="grid sm:grid-cols-2 gap-4">
-            <input
-              className="rounded-xl px-4 py-3 ring-1 ring-emerald-100 outline-none focus:ring-emerald-300"
-              placeholder="Email"
-            />
-            <input
-              className="rounded-xl px-4 py-3 ring-1 ring-emerald-100 outline-none focus:ring-emerald-300"
-              placeholder="Phone"
-            />
+            <input className="rounded-xl px-4 py-3 ring-1 ring-emerald-100 outline-none focus:ring-emerald-300" placeholder="Email" />
+            <input className="rounded-xl px-4 py-3 ring-1 ring-emerald-100 outline-none focus:ring-emerald-300" placeholder="Phone" />
           </div>
-          <textarea
-            rows={4}
-            className="rounded-xl px-4 py-3 ring-1 ring-emerald-100 outline-none focus:ring-emerald-300"
-            placeholder="Message"
-          />
+          <textarea rows={4} className="rounded-xl px-4 py-3 ring-1 ring-emerald-100 outline-none focus:ring-emerald-300" placeholder="Message" />
           <Button>Send Message</Button>
         </form>
       </motion.div>
@@ -770,13 +670,12 @@ function Contact() {
 }
 
 /* ========= Footer ========= */
-
 function Footer() {
   return (
-    <footer className="bg-emerald-700 text-white">
+    <footer className="bg-gradient-to-br from-emerald-600 via-green-500 to-lime-400 text-white">
       <div className="mx-auto max-w-7xl px-4 py-12 grid gap-8 md:grid-cols-4">
         <div>
-          <div className="flex items-center gap-3">
+          <div className="flex items中心 gap-3">
             <Image src="/logo.png" alt="Ceypetco Agro" width={40} height={40} className="rounded-full ring-1 ring-white/30" />
             <div className="font-semibold">Ceypetco Agro</div>
           </div>
@@ -785,48 +684,24 @@ function Footer() {
         <div>
           <h4 className="font-semibold">Links</h4>
           <ul className="mt-3 space-y-2 text-sm text-white/90">
-            <li>
-              <a href="#about" className="hover:underline">
-                About
-              </a>
-            </li>
-            <li>
-              <a href="#services" className="hover:underline">
-                Services
-              </a>
-            </li>
-            <li>
-              <a href="#categories" className="hover:underline">
-                Products
-              </a>
-            </li>
-            <li>
-              <a href="#projects" className="hover:underline">
-                Projects
-              </a>
-            </li>
-            <li>
-              <a href="#blog" className="hover:underline">
-                Blog
-              </a>
-            </li>
+            <li><a href="#about" className="hover:underline">About</a></li>
+            <li><a href="#services" className="hover:underline">Services</a></li>
+            <li><a href="#categories" className="hover:underline">Products</a></li>
+            <li><a href="#projects" className="hover:underline">Projects</a></li>
+            <li><a href="#blog" className="hover:underline">Blog</a></li>
           </ul>
         </div>
         <div>
           <h4 className="font-semibold">Support</h4>
           <ul className="mt-3 space-y-2 text-sm text-white/90">
-            <li>FAQ</li>
-            <li>Privacy</li>
-            <li>Terms</li>
+            <li>FAQ</li><li>Privacy</li><li>Terms</li>
           </ul>
         </div>
         <div>
           <h4 className="font-semibold">Newsletter</h4>
           <div className="mt-3 flex gap-2">
             <input className="w-full rounded-full px-4 py-2 text-sm text-neutral-900 outline-none" placeholder="Your email" />
-            <Button variant="ghost" className="bg-white/15 hover:bg-white/25">
-              Join
-            </Button>
+            <Button variant="ghost" className="bg-white/15 hover:bg-white/25">Join</Button>
           </div>
         </div>
       </div>
@@ -838,7 +713,6 @@ function Footer() {
 }
 
 /* ========= Page ========= */
-
 export default function Page() {
   return (
     <div className="min-h-screen bg-white text-neutral-900">
